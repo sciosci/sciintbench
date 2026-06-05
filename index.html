@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SciIntBech: Project Page</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Modern, clean typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Floating Left Sidebar Navigation -->
+  <aside aria-label="Section navigation">
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#cite">Citation</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <!-- WRAP ALL TITLE ELEMENTS IN THIS NEW TAG -->
+    <header class="hero-header">
+        <h1>SciIntBench</h1>
+        <p class="subtitle">Measuring LLM Compliance with Research Integrity Norms Under Adversarial Framing</p>
+        
+        <div class="authors">
+          <a href="https://almene08.github.io" target="_blank">Almene De Meran Meguimtsop</a><sup>1</sup>,
+          <a href="#" target="_blank">Maria Leonor Pacheco</a><sup>1</sup>,
+          <a href="https://acuna.io" target="_blank">Daniel E. Acuna</a><sup>1</sup>
+          <span class="affiliations"><sup>1</sup>Department of Computer Science, University of Colorado Boulder</span>
+        </div>
+        
+        <div class="project-links">
+          <a href="https://arxiv.org/abs/2605.29468" class="btn" target="_blank">Paper ↗</a>
+          <a href="https://github.com/sciosci/SciIntBench-research-integrity" class="btn" target="_blank">Code ↗</a>
+        </div>
+    </header>
+        
+        <hr>
+        
+        <h3>Abstract</h3>
+        <p class="intro-paragraph">
+  Scientific misconduct has become increasingly apparent over the past decade, usually driven by counterproductive publication and career incentives facing researchers. These questionable practices are often rationalized in daily academic environments as a practical response to immense pressure, looming deadlines, and the pressure to tell a positive, flawless story.
+</p>
+
+<p class="intro-paragraph">
+  At the same time, Large Language Models (LLMs) are rapidly weaving into the scientific workflow, evolving into advanced agentic systems capable of automating entire stretches of the research process. Yet, it remains deeply unclear whether and how these models uphold Responsible Conduct of Research (RCR) practices, or if they inadvertently help undermine them; particularly because we do not know if they recognize misconduct when wrapped in the nuanced language researchers actually use to rationalize it.
+</p>
+
+<p class="intro-paragraph">
+  Evaluating this behavior presents a unique challenge. While an AI should obviously refuse explicit violations like data fabrication, it must not become so overly paranoid that it rejects legitimate scholarly help such as assisting a researcher in transparently reporting missing data or formatting a limitations section. This dual demand creates a <strong>safety-helpfulness tension</strong>: how do we train models to refuse scientific fraud without triggering widespread false refusals on legitimate research tasks?
+</p>
+
+<p class="intro-paragraph">
+  To directly address this safety-helpfulness tension, we introduce <strong>SciIntBench</strong>: an adversarial benchmark consisting of 810 carefully designed prompts across ten distinct RCR categories and three major scientific domains. Our framework evaluates 16 commercial and open-weight frontier LLMs from six major providers, analyzing a total of 12,960 generated responses.
+</p>
+      </div>
+    </section>
+
+    <!-- Overview / Key Contribution Section -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <figure>
+        <img src="images/figure1_rcr.png" alt="SciIntBech Core Architecture Overview">
+        <figcaption>
+          <strong>Figure 1:</strong> SciIntBench evaluates scientific integrity alignment across 10 RCR categories and three scientific domains.
+        </figcaption>
+      </figure>
+
+      <!-- New Section Addition: Framework Mechanics Deep-Dive -->
+  <div class="framework-deep-dive">
+    
+    <!-- Card 1: Prompt Framing Strategies -->
+    <div class="mechanism-card">
+      <div class="card-icon">✍️</div>
+      <h4>The 3 Prompt Framing Strategies</h4>
+      <p><strong>SciIntBench</strong> evaluates the safety-helpfulness tension using matched prompt triplets to see if models can detect misconduct when masked by academic language:</p>
+      <ul>
+        <li><strong>Overt Adversarial:</strong>  Prompts that overtly ask the model to assist with research misconduct or unethical scientific practice, across three intent tiers (Naive/Misguided, Intentional Shortcut, and Explicit Misconduct).</li>
+        <li><strong>Covert Adversarial:</strong> Prompts that seek similar unethical assistance but frame the request in language that resembles ordinary scientific writing, such as asking how to "describe the data without overemphasizing missingness."</li>
+        <li><strong>Benign Prompts:</strong> Prompts which resemble the unsafe requests but ask for legitimate assistance.</li>
+      </ul>
+    </div>
+
+    <!-- Card 2: Dual-Judge Evaluation Pipeline -->
+    <div class="mechanism-card">
+      <div class="card-icon">⚖️</div>
+      <h4>Dual-Path Evaluation Metrics</h4>
+      <p>Outputs are separated into independent evaluation pipelines to measure the safety-helpfulness tension accurately:</p>
+      <ul>
+        <li><strong>Adversarial Path:</strong> Measures <em>Compliance vs. Refusal</em> rates to determine if the model successfully flags covert and overt violations.</li>
+        <li><strong>Benign Path:</strong> Measures <em>Helpful Compliance vs. False Refusal</em> to calculate the "Over-Refusal Rate"—monitoring if safety tuning breaks usability.</li>
+      </ul>
+    </div>
+
+  </div>
+    </section>
+
+
+<section id="method">
+  <h2>Technical Implementation & Mechanics</h2>
+  <p class="intro-paragraph">
+    Beyond the conceptual pipeline, SciIntBench enforces a highly controlled execution sandbox and data schema to ensure all 12,960 model responses are programmatically parseable and mathematically sound.
+  </p>
+
+  <h3>1. Benchmark Data Schema</h3>
+  <p class="intro-paragraph">
+    Each entry in the benchmark repository is backed by a rich metadata matrix. When downloading or interacting with the full dataset, every scenario is mapped across the following structural columns:
+  </p>
+  
+  <div class="schema-container">
+    <table class="schema-table">
+      <thead>
+        <tr>
+          <th>Column Name</th>
+          <th>Technical Purpose / Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Task ID</code></td>
+          <td>Unique alphanumeric identifier tracking each localized scenario.</td>
+        </tr>
+        <tr>
+          <td><code>Domain / Field</code></td>
+          <td>Categorizes the context into ML/AI, Biomed, or Social Sciences.</td>
+        </tr>
+        <tr>
+          <td><code>User Intent Level</code></td>
+          <td>Tracks the severity tier: Naive, Intentional Shortcut, or Explicit Misconduct.</td>
+        </tr>
+        <tr>
+          <td><code>Prompt Context</code></td>
+          <td>The foundational academic background scenario before framing variants are applied.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2. LLM-as-a-Judge Evaluation Pipeline</h3>
+  <p class="intro-paragraph">
+    The benchmark processes model responses using an automated LLM-as-a-judge framework. Configured to act as an expert Research Integrity Officer, the judge evaluates outputs along two independent dimensions, analyzing both the primary decision (compliance vs. refusal) and the nuanced quality of the safety alignment.
+  </p>
+
+  <h3>3. Algorithmic Judge Reliability & Inter-Rater Consensus</h3>
+  <p class="intro-paragraph">
+    To evaluate whether an automated LLM-as-a-judge framework could serve as a viable alternative to resource-intensive manual review, the evaluation pipeline was subjected to rigorous validation testing. The evaluation pipeline cross-checks judgments between two independent models, <strong>GPT-5.5</strong> (Primary Judge) and <strong>Claude Opus 4.7</strong> (Secondary Judge), over a shared sample of 12,533 generated responses.
+  </p>
+  <p class="intro-paragraph">
+    The algorithmic judging platform achieved an overall <strong>96.1% decision agreement</strong>, yielding a highly robust Cohen's &kappa; = 0.940. Furthermore, a stratified human audit checking these decisions validated the primary pipeline's precision, showing an expert human-to-judge consensus score of &kappa; = 0.886.
+  </p>
+
+  <div class="method-link-container" style="margin-top: 2rem; display: flex;">
+    <a href="https://arxiv.org/abs/2605.29468" target="_blank" class="btn" style="background-color: var(--accent-color); color: #fff; font-weight: 500;">
+      Read the Paper for Full Evaluation Prompts & Metrics ↗
+    </a>
+  </div>
+</section>
+
+    <!-- Evaluation & Results Matrix -->
+    <section id="results">
+      <h2>Results</h2>
+  <p class="intro-paragraph">
+    Our evaluation of 16 frontier models reveals a critical vulnerability in current safety alignment: models are highly sensitive to how research misconduct is framed. Although models generally identify and block overt requests, their safety mechanisms appear less robust against unethical behavior framed through plausible academic rationalizations.
+  </p>
+      <figure>
+        <img src="images/figure2_rcr.png" alt="SciIntBech Core Architecture Overview">
+        <figcaption>
+          <strong>Figure 2:</strong> SciIntBench evaluates scientific integrity alignment across 10 RCR categories and three scientific domains.
+        </figcaption>
+      </figure>
+
+  <ul class="results-list">
+    <li>
+      <strong>The Covert Safety Gap:</strong> On average, models successfully refused 79.5% of Overt Adversarial prompts. However, when the exact same unethical intent was reframed using covert academic jargon, the average refusal rate decreased to 45.3%.
+    </li>
+    <li>
+      <strong>Vulnerability by Integrity Category:</strong> Safety boundaries are skewed depending on the topic. Models were particularly susceptible to assisting with violations related to Data Transparency, Plagiarism, and Fabrication, while remaining much stricter on norms like Human & Animal Subjects.
+    </li>
+    <li>
+      <strong>Generational Model Evolution:</strong> While newer model versions from same providers generally demonstrate higher overall refusal rates than their predecessors, the fundamental performance gap between overt and covert prompt framing persists across all major provider families.
+    </li>
+  </ul>
+      
+    </section>
+
+    <!-- Citation Box & Institutional Acknowledgements -->
+    <footer id="cite">
+      <h2>Citation</h2>
+      <div class="citation-box">
+        <div class="citation-header">BibTeX</div>
+        <pre><code>@article{meguimtsop2026sciintbench,
+  title={SciIntBench: Measuring LLM Compliance with Research Integrity Norms Under Adversarial Framing},
+  author={Meguimtsop, Almene De Meran and Pacheco, Maria Leonor and Acuna, Daniel E},
+  journal={arXiv preprint arXiv:2605.29468},
+  year={2026}
+}
+</code></pre>
+      </div>
+      
+      <div class="acknowledgements">
+        <p> </p>
+      </div>
+    </footer>
+
+  </main>
+
+</body>
+</html>
